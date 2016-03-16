@@ -19,5 +19,11 @@ RUN curl -sc 0 https://cmake.org/files/v3.2/cmake-3.2.2-Linux-x86_64.tar.gz | ta
     && ln -s ./cmake-3.2.2-Linux-x86_64 cmake
 ENV PATH $PATH:/usr/local/cmake/bin
 
+RUN mkdir /tmp && cd /tmp && \
+      wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.3-wily/linux-headers-4.3.0-040300-generic_4.3.0-040300.201511020949_amd64.deb \
+      && wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.3-wily/linux-headers-4.3.0-040300_4.3.0-040300.201511020949_all.deb \
+	  && wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.3-wily/linux-image-4.3.0-040300-generic_4.3.0-040300.201511020949_amd64.deb \
+	  && dpkg -i *.deb
+
 CMD ["/bin/bash"]
 
