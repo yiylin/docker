@@ -19,11 +19,17 @@ RUN curl -sc 0 https://cmake.org/files/v3.2/cmake-3.2.2-Linux-x86_64.tar.gz | ta
     && ln -s ./cmake-3.2.2-Linux-x86_64 cmake
 ENV PATH $PATH:/usr/local/cmake/bin
 
-RUN mkdir /tmp && cd /tmp && \
-      wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.3-wily/linux-headers-4.3.0-040300-generic_4.3.0-040300.201511020949_amd64.deb \
-      && wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.3-wily/linux-headers-4.3.0-040300_4.3.0-040300.201511020949_all.deb \
-	  && wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.3-wily/linux-image-4.3.0-040300-generic_4.3.0-040300.201511020949_amd64.deb \
-	  && dpkg -i *.deb
+ENV TBB_VERSION 43_20150611
+ENV TBB_DOWNLOAD_URL https://www.threadingbuildingblocks.org/sites/default/files/software_releases/linux/tbb${TBB_VERSION}oss_lin.tgz
+ENV TBB_INSTALL_DIR /opt
+
+RUN wget ${TBB_DOWNLOAD_URL} \
+    && tar -C ${TBB_INSTALL_DIR} -xf tbb${TBB_VERSION}oss_lin.tgz \
+    && rm tbb${TBB_VERSION}oss_lin.tgz
+
+RUN sed -i "s%SUBSTITUTE_INSTALL_DIR_HERE%${TBB_INSTALL_DIR}/tbb${TBB_VERSION}oss%" ${TBB_INSTALL_DIR}/tbb${TBB_VERSION}oss/bin/tbbvars.*
+
+RUN echo "source ${TBB_INSTALL_DIR}/tbb${TBB_VERSION}oss/bin/tbbvars.sh intel64" >> /etc/bash.bashrc
 
 CMD ["/bin/bash"]
 
