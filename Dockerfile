@@ -11,7 +11,7 @@ USER root
 RUN apt-get update \
     && apt-get install -qqy curl tar g++-4.8 gcc \
 	   libtool pkg-config autoconf openssh-server openssh-client rsync build-essential automake \
-       vim git  libboost-dev
+       vim git  libboost-dev  gdb
 
 # Cmake
 RUN curl -sc 0 https://cmake.org/files/v3.2/cmake-3.2.2-Linux-x86_64.tar.gz | tar -xz -C /usr/local  \
